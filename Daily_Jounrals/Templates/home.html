@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Journal</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            margin-top: 40px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .add-btn {
+            display: block;
+            width: fit-content;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .entries {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .entry {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .entry:hover {
+            transform: translateY(-5px);
+        }
+
+        .entry h3 {
+            margin-top: 0;
+            color: #222;
+        }
+
+        .mood {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+
+        .description {
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .date {
+            font-size: 12px;
+            color: gray;
+        }
+
+        .empty {
+            text-align: center;
+            color: gray;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>🌿 My Journal Entries</h2>
+
+    <a href="{% url 'create' %}" class="add-btn">➕ Add Entry</a>
+
+    <form method="GET" style="margin: 20px auto; padding: 20px; background: #f9f9f9; border-radius: 10px; width: 90%; max-width: 800px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+            <!-- Text Search -->
+            <div>
+                <label>Search by Title/Description:</label><br>
+                <input type="text" name="q" value="{{ query }}" placeholder="Search..." style="padding: 8px; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
+            </div>
+
+            <!-- Mood Filter -->
+            <div>
+                <label>Filter by Mood:</label><br>
+                <select name="mood" style="padding: 8px; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
+                    <option value="">All Moods</option>
+                    <option value="happy" {% if mood == 'happy' %}selected{% endif %}>😊 Happy</option>
+                    <option value="neutral" {% if mood == 'neutral' %}selected{% endif %}>😐 Neutral</option>
+                    <option value="sad" {% if mood == 'sad' %}selected{% endif %}>😢 Sad</option>
+                </select>
+            </div>
+
+            <!-- Date Filter -->
+            <div>
+                <label>Filter by Date:</label><br>
+                <input type="date" name="date" value="{{ date_filter }}" style="padding: 8px; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 15px;">
+            <button type="submit" style="padding: 10px 20px; background: #2196F3; color: white; border: none; border-radius: 5px; cursor: pointer; margin-right: 10px;">Apply Filters</button>
+            <a href="{% url 'home' %}" style="padding: 10px 20px; background: #f44336; color: white; border-radius: 5px; text-decoration: none; display: inline-block;">Clear All</a>
+        </div>
+    </form>
+
+    {% if entries %}
+    <div class="entries">
+        {% for entry in entries %}
+        <div class="entry">
+            <h3>{{ entry.title }}</h3>
+            <div class="mood">{{ entry.get_mood_display }}</div>
+            <div class="description">{{ entry.description }}</div>
+            <div class="date">{{ entry.date }}</div>
+            <a href="{% url 'update' entry.id %}" class="add-btn">➕ Edit Entry</a>
+             <a href="{% url 'delete' entry.id %}" class="add-btn">➕ Delete Entry</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p class="empty">No entries yet. Start writing ✍️</p>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
