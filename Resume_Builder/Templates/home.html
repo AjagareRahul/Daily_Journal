@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% for p in profile %}
+    <h2>Name: {{p.name}}</h2>
+    <h4>E-mail: {{p.email}}</h4>
+    <h4>Phone: {{p.phone}}</h4>
+     {% endfor %}
+     <a href="{% url 'create' %}">ADD DATA</a>
+</body>
+</html>
