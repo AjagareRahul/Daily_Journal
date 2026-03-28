@@ -3,14 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Resume Builder</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; color: #333; }
+        .navbar { background: linear-gradient(135deg, #667eea, #764ba2); padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h1 { color: #fff; font-size: 1.5rem; }
+        .navbar a { color: #fff; text-decoration: none; background: rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 6px; transition: 0.3s; }
+        .navbar a:hover { background: rgba(255,255,255,0.35); }
+        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+        .card { background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); margin-bottom: 24px; overflow: hidden; }
+        .card-header { background: linear-gradient(135deg, #667eea, #764ba2); padding: 24px 30px; color: #fff; }
+        .card-header h2 { font-size: 1.6rem; }
+        .card-header span { font-size: 0.95rem; opacity: 0.9; }
+        .card-body { padding: 24px 30px; }
+        .section { margin-bottom: 20px; }
+        .section:last-child { margin-bottom: 0; }
+        .section h3 { font-size: 1.1rem; color: #667eea; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid #eee; }
+        .section ul { list-style: none; padding: 0; }
+        .section ul li { padding: 8px 12px; background: #f8f9ff; border-left: 3px solid #667eea; margin-bottom: 6px; border-radius: 0 6px 6px 0; }
+        .section ul li strong { color: #333; }
+        .tag { display: inline-block; background: #667eea; color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; margin: 3px; }
+        .empty { color: #999; font-style: italic; padding: 8px 12px; }
+        .contact-info { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 8px; }
+        .contact-info span { font-size: 0.95rem; color: #555; }
+        .contact-info span::before { margin-right: 6px; }
+        .actions { display: flex; gap: 10px; margin-top: 12px; }
+        .btn-edit { background: rgba(255,255,255,0.2); color: #fff; padding: 6px 16px; border-radius: 6px; text-decoration: none; transition: 0.3s; font-size: 0.9rem; }
+        .btn-edit:hover { background: rgba(255,255,255,0.35); }
+        .btn-delete { background: rgba(255,50,50,0.4); color: #fff; padding: 6px 16px; border-radius: 6px; text-decoration: none; transition: 0.3s; font-size: 0.9rem; }
+        .btn-delete:hover { background: rgba(255,50,50,0.6); }
+        .toast { padding: 12px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 0.95rem; animation: fadeIn 0.3s ease; }
+        .toast-success { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
 <body>
-    {% for p in profile %}
-    <h2>Name: {{p.name}}</h2>
-    <h4>E-mail: {{p.email}}</h4>
-    <h4>Phone: {{p.phone}}</h4>
-     {% endfor %}
-     <a href="{% url 'create' %}">ADD DATA</a>
+    <div class="navbar">
+        <h1>Resume Builder</h1>
+        <a href="{% url 'create' %}">+ Add New Resume</a>
+    </div>
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="toast toast-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% for p in profile %}
+        <div class="card">
+            <div class="card-header">
+                <h2>{{ p.name }}</h2>
+                <div class="contact-info">
+                    <span>&#9993; {{ p.email }}</span>
+                    <span>&#9742; {{ p.phone }}</span>
+                </div>
+                {% if p.summary %}<p style="margin-top:10px; opacity:0.9;">{{ p.summary }}</p>{% endif %}
+                <div class="actions">
+                    <a href="{% url 'update' p.pk %}" class="btn-edit">&#9998; Edit</a>
+                    <a href="{% url 'delete' p.pk %}" class="btn-delete">&#128465; Delete</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="section">
+                    <h3>Education</h3>
+                    <ul>
+                    {% for edu in p.education_set.all %}
+                        <li><strong>{{ edu.degree }}</strong> &mdash; {{ edu.college }} ({{ edu.year }})</li>
+                    {% empty %}
+                        <li class="empty">No education details</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                <div class="section">
+                    <h3>Skills</h3>
+                    {% for sk in p.skill_set.all %}
+                        <span class="tag">{{ sk.name }}</span>
+                    {% empty %}
+                        <p class="empty">No skills added</p>
+                    {% endfor %}
+                </div>
+                <div class="section">
+                    <h3>Projects</h3>
+                    <ul>
+                    {% for proj in p.project_set.all %}
+                        <li><strong>{{ proj.title }}</strong><br><span style="color:#666;">{{ proj.description }}</span></li>
+                    {% empty %}
+                        <li class="empty">No projects added</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="card" style="text-align:center; padding:40px;">
+            <h3>No resumes yet</h3>
+            <p style="color:#999; margin-top:10px;">Click "Add New Resume" to get started.</p>
+        </div>
+        {% endfor %}
+    </div>
 </body>
 </html>

@@ -9,7 +9,7 @@ class ProfileForm(forms.ModelForm):
 class EducationForm(forms.ModelForm):
     class Meta:
         model=Education
-        fields=['profile','degree','college','year']
+        fields=['degree','college','year']
 
 class SkillForm(forms.ModelForm):
     class Meta:
