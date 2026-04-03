@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Profiles</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .profile-card { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 8px; }
+        .btn { display: inline-block; padding: 8px 16px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; }
+        .btn:hover { background: #0056b3; }
+        .btn-secondary { background: #6c757d; }
+        .btn-secondary:hover { background: #545b62; }
+    </style>
+</head>
+<body>
+    <!-- Page heading -->
+    <h2>All Profiles</h2>
+    
+    <!-- Navigation buttons -->
+    <a href="{% url 'my_profile' %}" class="btn">My Profile</a>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
+
+    <!-- Loop through all profiles passed from view -->
+{% for p in profile %}
+    <div class="profile-card">
+        <!-- Display username -->
+        <h3>{{ p.user.username }}</h3>
+        <!-- Display bio -->
+        <p>{{ p.bio }}</p>
+        <!-- Display skills -->
+        <p><strong>Skills:</strong> {{ p.skills }}</p>
+    </div>
+{% endfor %}
+
+    <!-- Link to create a new profile -->
+    <a href="{% url 'create_profile' %}" class="btn">Create Profile</a>
+</body>
+</html>

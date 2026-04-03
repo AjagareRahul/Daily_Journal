@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Profile</title>
+</head>
+<body>
+    <!-- Page heading -->
+    <h1>Create Profile</h1>
+    
+    <!-- Form for creating profile - uses POST method -->
+    <form method="POST">
+        <!-- CSRF token for security (prevents cross-site request forgery) -->
+        {% csrf_token %}
+        <!-- Render form fields as paragraphs -->
+        {{ form.as_p }}
+        <!-- Submit button -->
+        <button type="submit">Submit</button>
+    </form>
+    
+    <!-- Link back to home page -->
+    <a href="{% url 'home' %}">Back to Home</a>
+  
+</body>
+</html>
