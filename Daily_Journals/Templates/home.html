@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Daily Journal</h2>
+    {% if journals %}
+
+     {% for j in journals %}
+    <div style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px;">
+        <h3>{{ j.title }}</h3>
+        <p><strong>Mood:</strong> {{ j.mood }}</p>
+        <p>{{ j.description|linebreaks }}</p>
+        <small>Created: {{ j.create_at }}</small>
+        <a href="{% url 'update_journal' j.id %}">Update_Journal</a>
+        <a href="{% url 'delete_entry' j.id %}">Delete_Entry</a>
+    </div>
+    {% endfor %}
+
+    {% else %}
+    <p>Not Journals yet</p>
+    {% endif %}
+   <a href="{% url 'create_journals' %}">Add Journal</a>
+    
+</body>
+</html>

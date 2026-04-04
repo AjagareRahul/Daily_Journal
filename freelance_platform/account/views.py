@@ -48,7 +48,6 @@ def update_profile(request, id):
     
     # Authorization check: only the profile owner can update
     if profile.user != request.user:
-        from django.http import HttpResponseForbidden
         return HttpResponseForbidden("You can only update your own profile.")
 
     # Handle form submission
