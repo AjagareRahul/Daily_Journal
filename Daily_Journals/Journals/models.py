@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class JournlEntry(models.Model):
+class JournalEntry(models.Model):
     CHOOSE_CHOICES=[
         ('HAPPY','😃HAPPY'),
         ('NATURAL','😐NATURAL'),

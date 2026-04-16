@@ -7,6 +7,9 @@
 </head>
 <body>
     <h2>Daily Journal</h2>
+    {% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}! ({{ user.email }})</p>
+    {% endif %}
     {% if journals %}
 
      {% for j in journals %}
@@ -24,6 +27,8 @@
     <p>Not Journals yet</p>
     {% endif %}
    <a href="{% url 'create_journals' %}">Add Journal</a>
-    
+   <hr>
+    <a href="{% url 'registration' %}">Register</a>
+    <a href="{% url 'login' %}">Login</a>
 </body>
 </html>
