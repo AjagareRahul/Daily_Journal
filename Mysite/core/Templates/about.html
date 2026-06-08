@@ -1,11 +1,26 @@
 
 {% extends 'base.html' %}
 
-      {% block content %}
-    <h2> This is about page</h2>
-    <a href="/home">Go to home</a><br>
-    <a href="/contact">Contact</a><br>
-    {% endblock %}
+{% block content %}
+
+<h2> This is about page</h2>
+
+{% for student in students  %}
+
+  <p>
+    Name:{{ student.name }}
+    Age:{{ student.age }}
+    City:{{ student.city }}
+  </p>
+
+{% empty %}
+  
+  <p>No students found</p>
     
-</body>
-</html>
+  {% endfor %}
+
+  <a href="/home">Go to home</a><br>
+  <a href="/contact">Contact</a><br>
+  
+  {% endblock %}
+    

@@ -2,8 +2,16 @@
     {% block content %}
     
     <h2>This is home page</h2>
-    <a href="/about">Go to home</a><br>
-    <a href="/contact">Go to contact</a>
+    {% for student in students %}
+    <p>
+        Name: {{ student.name }} <br>
+        Age: {{ student.age }} <br>
+        City: {{ student.city }}
+    </p>
+{% endfor %}
+    <br>
+    {{ student.age }}
+   
+   <a href="/about/">Go to about</a>
+<a href="/contact/">Go to contact</a>
     {% endblock %}    
-</body>
-</html>
