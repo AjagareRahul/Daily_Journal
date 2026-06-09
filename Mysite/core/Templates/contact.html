@@ -1,8 +1,29 @@
 {% extends 'base.html' %}
 
-    {% block content  %}
-     <h2>This is Contact page</h2>
-    <a href="/about">Go to About</a><br>
-    <a href="/home">Go to home</a><br>
-    
-    {% endblock %}
+    {% block content %}
+<div style="padding: 20px; font-family: Arial, sans-serif;">
+<h2 style="color: #333; margin-bottom: 20px;">This is Contact page</h2>
+
+<a href="/about" style="display: inline-block; margin: 10px 10px 10px 0;">Go to About</a>
+<a href="/home" style="display: inline-block;">Go to home</a>
+
+<form method="GET" style="margin: 15px 0;">
+    <input type="text" name="q" placeholder="search here" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+    <button type="submit" style="padding: 8px 16px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Search</button>
+</form>
+
+{% for s in s1 %}
+<div style="background: #f9f9f9; padding: 10px; margin: 5px 0; border-radius: 4px;">
+    {{ s.name }} {{ s.age }} {{ s.city }}
+</div>
+{% endfor %}
+
+<hr style="margin: 20px 0;">
+
+{% for s in student %}
+<div style="background: #f9f9f9; padding: 10px; margin: 5px 0; border-radius: 4px;">
+    {{ s.id }} {{ s.name }} {{ s.age }} {{ s.city }}
+</div>
+{% endfor %}
+</div>
+{% endblock %}

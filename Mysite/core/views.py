@@ -1,28 +1,33 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Student
-
-# Create your views here.
+from django.db.models import Q
 
 def home(request):
     student = [
     {'name': "Rahul", 'age': 22, 'city': 'Latur'}
 ]
-
+    
     return render(request,'home.html',{'students':student})
-   # return HttpResponse("Django Started")
+
+def hero(request):
+    return render(request,'hero.html')
 
 def about(request):
-    students=Student.objects.filter(age=22)
+    sort=request.GET.get('sort')
+    query=request.GET.get('q')
     
-    #student=Student.objects.all()
+    if query:
+        students=Student.objects.filter(Q(name__icontains=query) | Q(city__icontains=query))
+    else:
+        if sort=="asc":
+            students=Student.objects.all().order_by('id')
+        elif sort=="desc":
+            students=Student.objects.all().order_by('-id')
+        else:
+            students=Student.objects.all()
+    
     return render(request,'about.html',{'students':students})
-    #return HttpResponse("About Page")
-    '''student=[
-        {'name':'Rahul','sirname':'Ajagare','age':22},
-        {'name':'Danny','sirname':'Ajagare','age':23},
-    ]
-    '''
 
 def contact(request):
     return render(request,'contact.html')
