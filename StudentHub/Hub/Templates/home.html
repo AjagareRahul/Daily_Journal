@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block containt %}
+
+<h3>This is the Home Page</h3>
+{% for student in students %}
+
+<table>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>age</th>
+        <th>College</th>
+    <tbody>
+{{ student.id }}
+        <td>   
+            {{ student.fname }}      
+        </td>
+        <td>   
+            {{ student.lname }}      
+        </td>
+        <td>   
+            {{ student.age }}     
+        </td>
+        <td>   
+          {{ student.college }}      
+        </td>
+
+    </tbody>
+
+
+{% endfor %}
+
+{% endblock  %}
+
