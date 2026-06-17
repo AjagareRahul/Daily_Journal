@@ -1,34 +1,79 @@
-{% extends "base.html" %}
-
-{% block containt %}
+{% block content %}
 
 <h3>This is the Home Page</h3>
-{% for student in students %}
 
-<table>
-        <th>First Name</th>
+
+<form method="GET">
+<input type="text" name="q" placeholder="Search name or city">
+
+<select name="sort">
+    <option value="">Sort</option>
+    <option value="age">Age Asc</option>
+    <option value="desc">Age Desc</option>
+
+</select>
+<button type="submit">Apply</button> 
+</form>
+
+<p>Total Students: {{ students | length }}</p>
+
+{% if request.GET.q  %}
+
+<p>
+    Showing {{ students | length}}
+    result for "<b> {{ request.GET.q }}</b>"
+</p>
+
+{% endif %}
+
+
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+       <th>First Name</th>
         <th>Last Name</th>
         <th>age</th>
         <th>College</th>
+    </tr>
+    </thead>
     <tbody>
-{{ student.id }}
-        <td>   
-            {{ student.fname }}      
-        </td>
-        <td>   
-            {{ student.lname }}      
-        </td>
-        <td>   
-            {{ student.age }}     
-        </td>
-        <td>   
-          {{ student.college }}      
-        </td>
+    {% for student in students %}
+        <tr>  
+        <td>{{ student.id }}</td>
+        <td>{{ student.fname }}</td>
+        <td>{{ student.lname }}</td>
+        <td>{{ student.age }}</td>
+        <td>{{ student.college }}</td>
+    </tr>
+    {% empty %}
+    <tr>
 
+        <td colspan="5">No Students Found</td>
+
+    </tr>
+     {% endfor %}
     </tbody>
+</table>
+<section>
 
+    <div>
+ {% if students.has_previous  %}
+ <a href="? page={{ students.previous_page_number }}">Previous</a>
+ {% endif %}
 
-{% endfor %}
+ <span>Page {{ students.number }}of {{ students.paginator.num_pages }}</span>
+
+ {% if students.has_next  %}
+ <a href="? page={{ students.next_page_number }}">Next</a>
+ 
+ {% endif %}
+ 
+
+    </div>
+</section>
+
 
 {% endblock  %}
 
